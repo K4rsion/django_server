@@ -1,0 +1,63 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}Plot{% endblock title %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>
+        <h2>Plot a Function</h2>
+
+        <form id="function_form" method="POST">
+            {% csrf_token %}
+            <label for="function">Function to plot:</label>
+            <input type="text" id="function" name="function">
+            <button type="submit">Plot</button>
+        </form>
+
+        <div id="plot"></div>
+
+        <script>
+            // Получаем форму и контейнер для графика
+            const form = document.getElementById("function_form");
+            const plot = document.getElementById("plot");
+
+            // Сохраняем данные для графика в переменных
+            const plotData = (x, y) => [{
+                x: x,
+                y: y,
+                type: 'scatter'
+            }];
+
+            // Обработка отправки формы
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+
+                // Отправляем POST-запрос на сервер
+                const formData = new FormData(form);
+                fetch("/plot/", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Строим график
+                    const xValues = data.x_values;
+                    const yValues = data.y_values;
+                    const plotLayout = {
+                        margin: {
+                            t: 0
+                        }
+                    };
+                    Plotly.newPlot(plot, plotData(xValues, yValues), plotLayout);
+                })
+                .catch(error => console.error(error));                
+            });
+        </script>
+    </body>
+</html>
+{% endblock content %}
