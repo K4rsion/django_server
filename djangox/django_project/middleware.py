@@ -12,6 +12,9 @@ class MyMiddleware:
         if hasattr(request, 'path') and 'login' in request.path:
             response['Cache-Control'] = "no-store"
             return response
+        if hasattr(request, 'path') and 'text' in request.path:
+            response['Cache-Control'] = "public, max-age=600"
+            return response
 
         #для авторизованных пользователей
         if request.user.is_authenticated:
