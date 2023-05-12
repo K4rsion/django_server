@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends '../_base.html' %}
 {% load static %}
 
 {% block title %}Plot{% endblock title %}
@@ -10,8 +10,6 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body>
-        <h2>Plot a Function</h2>
-
         <form id="function_form" method="POST">
             {% csrf_token %}
             <label for="function">Function to plot:</label>
@@ -22,30 +20,23 @@
         <div id="plot"></div>
 
         <script>
-            // Получаем форму и контейнер для графика
             const form = document.getElementById("function_form");
             const plot = document.getElementById("plot");
-
-            // Сохраняем данные для графика в переменных
             const plotData = (x, y) => [{
                 x: x,
                 y: y,
                 type: 'scatter'
             }];
 
-            // Обработка отправки формы
             form.addEventListener("submit", event => {
                 event.preventDefault();
-
-                // Отправляем POST-запрос на сервер
                 const formData = new FormData(form);
-                fetch("/plot/", {
+                fetch("", {
                     method: "POST",
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Строим график
                     const xValues = data.x_values;
                     const yValues = data.y_values;
                     const plotLayout = {
@@ -60,4 +51,4 @@
         </script>
     </body>
 </html>
-{% endblock content %}
+{% endblock %}
