@@ -45,8 +45,11 @@
                     <li><a href="{% url 'text4' %}" class="nav-link px-2 link-dark">Text4</a></li>
                     <li><a href="{% url 'text5' %}" class="nav-link px-2 link-dark">Text5</a></li>
                     {% for language in languages %}
-                    <a href="/{{ language.code }}{{ request.path }}" class="btn btn-outline-secondary">{{ language.code }}</a>
+                    {% if not request.path|slice:"3" == "/"|join:language.code %}
+                    <a href="/{{ language.code }}" class="btn btn-outline-secondary">{{ language.code }}</a>
+                    {% endif %}
                     {% endfor %}
+
                 </ul>
 
                 <div class="dropdown text-end">
