@@ -3,8 +3,13 @@
 Настройка среды:
 ```
 python -m venv .venv
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-.venv\Scripts\Activate.ps1
+
+# Windows
+$ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+$ .venv\Scripts\Activate.ps1
+
+# macOS
+$ source .venv/bin/activate
 ```
 
 Установка и запуск сервера:
