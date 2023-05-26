@@ -6,19 +6,10 @@ class MyMiddleware:
     def __call__(self, request):
         response=self.get_response(request)
         
-        if hasattr(request, 'path') and 'plot' in request.path:
+        if hasattr(request, 'path') and not any(text in request.path for text in ['text1', 'text2', 'text3']):
             response['Cache-Control'] = "no-store,  no-cache, must-revalidate"
             return response
-        if hasattr(request, 'path') and 'login' in request.path:
-            response['Cache-Control'] = "no-store"
-            return response
-        if hasattr(request, 'path') and 'text' in request.path:
+        if hasattr(request, 'path') and any(text in request.path for text in ['text1', 'text2', 'text3']) and (request.user.is_authenticated or request.user.is_anonymous):
             response['Cache-Control'] = "public, max-age=600"
-            return response
-        if hasattr(request, 'path') and 'about' in request.path:
-            response['Cache-Control'] = "no-store,  no-cache"
-            return response
-        if hasattr(request, 'path') and '' in request.path:
-            response['Cache-Control'] = "no-store,  no-cache"
             return response
         
